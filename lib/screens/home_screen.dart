@@ -81,43 +81,61 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.25,
-                child: Swiper(
-                  itemCount: 3,
-                  // control: const SwiperControl(),
-                  pagination: const SwiperPagination(
-                    alignment: Alignment.bottomCenter,
-                    builder: DotSwiperPaginationBuilder(
-                      color: Colors.white,
-                      activeColor: Colors.red,
-                    ),
-                  ),
-                  itemBuilder: (ctx, index) {
-                    return const SaleWidget();
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    const Text(
-                      "Latest Products",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.25,
+                        child: Swiper(
+                          itemCount: 3,
+                          // control: const SwiperControl(),
+                          pagination: const SwiperPagination(
+                            alignment: Alignment.bottomCenter,
+                            builder: DotSwiperPaginationBuilder(
+                              color: Colors.white,
+                              activeColor: Colors.red,
+                            ),
+                          ),
+                          itemBuilder: (ctx, index) {
+                            return const SaleWidget();
+                          },
+                        ),
                       ),
-                    ),
-                    const Spacer(),
-                    AppBarIcons(function: () {}, icon: IconlyBold.arrowRight2),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            const Text(
+                              "Latest Products",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const Spacer(),
+                            AppBarIcons(function: () {}, icon: IconlyBold.arrowRight2),
+                          ],
+                        ),
+                      ),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 3,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 0.0,
+                          mainAxisSpacing: 0.0,
+                          childAspectRatio: 0.6,
+                        ),
+                        itemBuilder: (ctx, index) {
+                          return const FeedsWidget();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 160,
-                child: FeedsWidget(),
-              ),
+              )
             ],
           ),
         ),
