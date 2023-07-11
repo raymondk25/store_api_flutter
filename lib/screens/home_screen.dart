@@ -1,7 +1,9 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:store_api_flutter/consts/global_colors.dart';
+import 'package:store_api_flutter/screens/feeds_screen.dart';
 import 'package:store_api_flutter/widgets/appbar_icons.dart';
 import 'package:store_api_flutter/widgets/feeds_widget.dart';
 import 'package:store_api_flutter/widgets/sale_widget.dart';
@@ -107,14 +109,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           children: [
                             const Text(
-                              "Latest Products",
+                              "All Products",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 18,
                               ),
                             ),
                             const Spacer(),
-                            AppBarIcons(function: () {}, icon: IconlyBold.arrowRight2),
+                            AppBarIcons(
+                                function: () {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        child: const FeedsScreen(),
+                                        type: PageTransitionType.fade,
+                                      ));
+                                },
+                                icon: IconlyBold.arrowRight2),
                           ],
                         ),
                       ),
