@@ -1,7 +1,9 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:store_api_flutter/consts/global_colors.dart';
 import 'package:store_api_flutter/widgets/appbar_icons.dart';
+import 'package:store_api_flutter/widgets/feeds_widget.dart';
 import 'package:store_api_flutter/widgets/sale_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -78,7 +81,43 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              const SaleWidget(),
+              SizedBox(
+                height: size.height * 0.25,
+                child: Swiper(
+                  itemCount: 3,
+                  // control: const SwiperControl(),
+                  pagination: const SwiperPagination(
+                    alignment: Alignment.bottomCenter,
+                    builder: DotSwiperPaginationBuilder(
+                      color: Colors.white,
+                      activeColor: Colors.red,
+                    ),
+                  ),
+                  itemBuilder: (ctx, index) {
+                    return const SaleWidget();
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      "Latest Products",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const Spacer(),
+                    AppBarIcons(function: () {}, icon: IconlyBold.arrowRight2),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                width: 160,
+                child: FeedsWidget(),
+              ),
             ],
           ),
         ),
