@@ -119,11 +119,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             AppBarIcons(
                                 function: () {
                                   Navigator.push(
-                                      context,
-                                      PageTransition(
-                                        child: const FeedsScreen(),
-                                        type: PageTransitionType.fade,
-                                      ));
+                                    context,
+                                    PageTransition(
+                                      child: const FeedsScreen(),
+                                      type: PageTransitionType.fade,
+                                    ),
+                                  );
                                 },
                                 icon: IconlyBold.arrowRight2),
                           ],
