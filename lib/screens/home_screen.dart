@@ -10,7 +10,6 @@ import 'package:store_api_flutter/screens/users_screen.dart';
 import 'package:store_api_flutter/services/api_handler.dart';
 import 'package:store_api_flutter/widgets/appbar_icons.dart';
 import 'package:store_api_flutter/widgets/feeds_grid.dart';
-import 'package:store_api_flutter/widgets/feeds_widget.dart';
 import 'package:store_api_flutter/widgets/sale_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late TextEditingController _textEditingController;
-  List<ProductsModel> productsList = [];
 
   @override
   void initState() {
@@ -31,20 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    getProducts();
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
     _textEditingController.dispose();
     super.dispose();
-  }
-
-  Future<void> getProducts() async {
-    productsList = await APIHandler.getAllProducts();
-    setState(() {});
   }
 
   @override
@@ -164,7 +151,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      if (productsList.isNotEmpty) FeedsGridWidget(productsList: productsList),
+                      FutureBuilder<List<ProductsModel>>(
+                          future: APIHandler.getAllProducts(),
+                          builder: (ctx, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+                            if (snapshot.hasError) {
+                              return Center(child: Text('An error occured ${snapshot.error}'));
+                            }
+                            if (snapshot.data == null) {
+                              return const Center(child: Text('No products has been added yet'));
+                            }
+                            return FeedsGridWidget(productsList: snapshot.data!);
+                          })
                     ],
                   ),
                 ),
