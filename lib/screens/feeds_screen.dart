@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/products_model.dart';
 import '../services/api_handler.dart';
@@ -13,7 +14,6 @@ class FeedsScreen extends StatefulWidget {
 
 class _FeedsScreenState extends State<FeedsScreen> {
   List<ProductsModel> productsList = [];
-
   @override
   void didChangeDependencies() {
     getProducts();
@@ -45,9 +45,9 @@ class _FeedsScreenState extends State<FeedsScreen> {
                 childAspectRatio: 0.65,
               ),
               itemBuilder: (ctx, index) {
-                return FeedsWidget(
-                  title: productsList[index].title.toString(),
-                  imageUrl: productsList[index].images!.first,
+                return ChangeNotifierProvider.value(
+                  value: productsList[index],
+                  child: const FeedsWidget(),
                 );
               }),
     );
