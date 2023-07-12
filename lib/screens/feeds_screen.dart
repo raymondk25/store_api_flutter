@@ -13,15 +13,35 @@ class FeedsScreen extends StatefulWidget {
 }
 
 class _FeedsScreenState extends State<FeedsScreen> {
+  final ScrollController _scrollController = ScrollController();
   List<ProductsModel> productsList = [];
+  int limit = 10;
+  bool _isLimit = false;
+
+  @override
+  void initState() {
+    getProducts();
+    super.initState();
+  }
+
   @override
   void didChangeDependencies() {
-    getProducts();
     super.didChangeDependencies();
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        if (limit == 50) {
+          _isLimit = true;
+          setState(() {});
+          return;
+        }
+        limit += 10;
+        await getProducts();
+      }
+    });
   }
 
   Future<void> getProducts() async {
-    productsList = await APIHandler.getAllProducts();
+    productsList = await APIHandler.getAllProducts(limit: limit.toString());
     setState(() {});
   }
 
@@ -36,20 +56,34 @@ class _FeedsScreenState extends State<FeedsScreen> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : GridView.builder(
-              itemCount: productsList.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 0.0,
-                mainAxisSpacing: 0.0,
-                childAspectRatio: 0.65,
+          : SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: [
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: productsList.length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 0.0,
+                      mainAxisSpacing: 0.0,
+                      childAspectRatio: 0.65,
+                    ),
+                    itemBuilder: (ctx, index) {
+                      return ChangeNotifierProvider.value(
+                        value: productsList[index],
+                        child: const FeedsWidget(),
+                      );
+                    },
+                  ),
+                  if (!_isLimit)
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                ],
               ),
-              itemBuilder: (ctx, index) {
-                return ChangeNotifierProvider.value(
-                  value: productsList[index],
-                  child: const FeedsWidget(),
-                );
-              }),
+            ),
     );
   }
 }
