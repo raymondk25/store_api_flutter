@@ -34,24 +34,20 @@ class _FeedsScreenState extends State<FeedsScreen> {
       ),
       body: productsList.isEmpty
           ? Container()
-          : SingleChildScrollView(
-              child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: productsList.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 0.0,
-                    mainAxisSpacing: 0.0,
-                    childAspectRatio: 0.7,
-                  ),
-                  itemBuilder: (ctx, index) {
-                    return FeedsWidget(
-                      title: productsList[index].title.toString(),
-                      imageUrl: productsList[index].images!.first,
-                    );
-                  }),
-            ),
+          : GridView.builder(
+              itemCount: productsList.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 0.0,
+                mainAxisSpacing: 0.0,
+                childAspectRatio: 0.65,
+              ),
+              itemBuilder: (ctx, index) {
+                return FeedsWidget(
+                  title: productsList[index].title.toString(),
+                  imageUrl: productsList[index].images!.first,
+                );
+              }),
     );
   }
 }
