@@ -6,6 +6,7 @@ import 'package:store_api_flutter/consts/global_colors.dart';
 import 'package:store_api_flutter/screens/categories_screen.dart';
 import 'package:store_api_flutter/screens/feeds_screen.dart';
 import 'package:store_api_flutter/screens/users_screen.dart';
+import 'package:store_api_flutter/services/api_handler.dart';
 import 'package:store_api_flutter/widgets/appbar_icons.dart';
 import 'package:store_api_flutter/widgets/feeds_widget.dart';
 import 'package:store_api_flutter/widgets/sale_widget.dart';
@@ -24,6 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     _textEditingController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    APIHandler.getAllProducts();
+    super.didChangeDependencies();
   }
 
   @override
