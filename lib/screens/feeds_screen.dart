@@ -18,7 +18,11 @@ class FeedsScreen extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: 10,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, crossAxisSpacing: 0.0, mainAxisSpacing: 0.0, childAspectRatio: 0.7),
+              crossAxisCount: 2,
+              crossAxisSpacing: 0.0,
+              mainAxisSpacing: 0.0,
+              childAspectRatio: 0.7,
+            ),
             itemBuilder: (ctx, index) {
               return const FeedsWidget();
             }),
