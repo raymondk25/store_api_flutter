@@ -19,6 +19,13 @@ class APIHandler {
     return tempList;
   }
 
+  static Future<ProductsModel> getProductById({required String id}) async {
+    Uri uri = Uri.https(kBaseUrl, "api/v1/products/$id");
+    var response = await http.get(uri);
+    var data = jsonDecode(response.body);
+    return ProductsModel.fromJson(data);
+  }
+
   static Future<List<ProductsModel>> getAllProducts() async {
     List temp = await getData(target: "products");
     return ProductsModel.productsFromSnapshot(temp);
