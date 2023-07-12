@@ -23,4 +23,10 @@ class ProductsModel {
     updatedAt = json['updatedAt'];
     category = json['category'] != null ? CategoriesModel.fromJson(json['category']) : null;
   }
+
+  static List<ProductsModel> productsFromSnapshot(List productSnapshot) {
+    return productSnapshot.map((data) {
+      return ProductsModel.fromJson(data);
+    }).toList();
+  }
 }

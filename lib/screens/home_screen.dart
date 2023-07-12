@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:store_api_flutter/consts/global_colors.dart';
+import 'package:store_api_flutter/models/products_model.dart';
 import 'package:store_api_flutter/screens/categories_screen.dart';
 import 'package:store_api_flutter/screens/feeds_screen.dart';
 import 'package:store_api_flutter/screens/users_screen.dart';
 import 'package:store_api_flutter/services/api_handler.dart';
 import 'package:store_api_flutter/widgets/appbar_icons.dart';
+import 'package:store_api_flutter/widgets/feeds_grid.dart';
 import 'package:store_api_flutter/widgets/feeds_widget.dart';
 import 'package:store_api_flutter/widgets/sale_widget.dart';
 
@@ -20,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late TextEditingController _textEditingController;
+  List<ProductsModel> productsList = [];
 
   @override
   void initState() {
@@ -29,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void didChangeDependencies() {
-    APIHandler.getAllProducts();
+    getProducts();
     super.didChangeDependencies();
   }
 
@@ -37,6 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _textEditingController.dispose();
     super.dispose();
+  }
+
+  Future<void> getProducts() async {
+    productsList = await APIHandler.getAllProducts();
+    setState(() {});
   }
 
   @override
@@ -108,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 18),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -155,20 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: 3,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 0.0,
-                          mainAxisSpacing: 0.0,
-                          childAspectRatio: 0.7,
-                        ),
-                        itemBuilder: (ctx, index) {
-                          return const FeedsWidget();
-                        },
-                      ),
+                      if (productsList.isNotEmpty) FeedsGridWidget(productsList: productsList),
                     ],
                   ),
                 ),
