@@ -25,8 +25,8 @@ class CategoriesScreen extends StatelessWidget {
                 return const Center(child: Text('No products has been added yet'));
               }
               return GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+                  // shrinkWrap: true,
+                  // physics: const NeverScrollableScrollPhysics(),
                   itemCount: snapshot.data!.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
